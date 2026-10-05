@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "d1-to-libsql",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      // Replace with your database (`wrangler d1 list`).
+      "database_name": "my-database",
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ]
+  // Set the client token with: npx wrangler secret put AUTH_TOKEN
+}

@@ -1,0 +1,20 @@
+{
+  "name": "d1-to-libsql",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloudflare Worker that exposes a D1 database over the libSQL (Hrana over HTTP) protocol",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261005.1",
+    "@libsql/client": "^0.18.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3",
+    "wrangler": "^4.147.0"
+  }
+}
