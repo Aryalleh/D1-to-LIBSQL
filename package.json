@@ -5,6 +5,7 @@
   "description": "Cloudflare Worker that exposes a D1 database over the libSQL (Hrana over HTTP) protocol",
   "type": "module",
   "scripts": {
+    "setup": "node scripts/setup.mjs",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",

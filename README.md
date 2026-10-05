@@ -18,18 +18,37 @@ await db.execute({ sql: "SELECT * FROM users WHERE id = :id", args: { id: 1 } })
 await db.batch(["INSERT INTO users (name) VALUES ('a')", "UPDATE stats SET n = n + 1"], "write");
 ```
 
-## Deploy
+## Deploy (one command)
 
 ```sh
 npm install
-npx wrangler d1 list                 # find your database
-# edit wrangler.jsonc: set database_name / database_id of the DB binding
-npx wrangler secret put AUTH_TOKEN   # the token clients pass as authToken
-npm run deploy
+npm run setup
 ```
 
-Without `AUTH_TOKEN` every request is refused. For local development you can put
-`ALLOW_ANONYMOUS=true` (or `AUTH_TOKEN=…`) in `.dev.vars` and run `npm run dev`.
+`npm run setup` does everything:
+
+1. logs in to Cloudflare if needed (or uses `CLOUDFLARE_API_TOKEN`),
+2. creates the D1 database (or reuses it if it already exists),
+3. saves its name and id into `wrangler.jsonc`,
+4. deploys the Worker,
+5. generates a random `AUTH_TOKEN` and stores it as a Worker secret,
+6. writes the URL and token to `.libsql.env` (git-ignored) and checks `/health`.
+
+Options:
+
+```sh
+npm run setup -- --db my-db           # database name (default: d1-to-libsql-db)
+npm run setup -- --location weur      # location hint for a new database
+npm run setup -- --schema schema.sql  # also create tables from a SQL file
+npm run setup -- --token <token>      # use your own token
+npm run setup -- --new-token          # rotate the token
+```
+
+Running it again is safe: it reuses the database and the saved token and just redeploys.
+
+Manual setup: put your database in `wrangler.jsonc`, then `npx wrangler deploy` and
+`npx wrangler secret put AUTH_TOKEN`. Without `AUTH_TOKEN` every request is refused. For local
+development you can put `ALLOW_ANONYMOUS=true` (or `AUTH_TOKEN=…`) in `.dev.vars` and run `npm run dev`.
 
 ## Endpoints
 
